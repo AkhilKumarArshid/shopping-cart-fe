@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import ItemCard from "../itemCard";
 import SearchSortBar from "../searchSortBar";
 import { cartItemsContext } from "../../App";
+import * as constants from '../../constants';
 
-function HomePage(setCartItems) {
+
+function HomePage() {
   const { products, setProducts } = useContext(cartItemsContext);
   const [itemsList, setItemsList] = useState([]);
   const [searchText, setSearchText] = useState('');
@@ -22,42 +24,41 @@ function HomePage(setCartItems) {
 
     let prodIndex = products.findIndex((product) => product.name === item.name);
     productsArray[prodIndex] = item;
-    setProducts(productsArray);
-
+    setProducts([...productsArray]);
   };
 
   const handleSearchSort = (obj) => {
     let arr = itemsList;
     setSearchText(obj.text);
-    if(obj.order === "Ascending") {
+    if(obj.order === constants.ASCENDING) {
 
-        if(obj.sortType === "Name") {
+        if(obj.sortType === constants.NAME) {
             arr.sort((a,b)=> { 
                 let nameA = a.name.toUpperCase();
                 let nameB = b.name.toUpperCase();
                 if(nameA > nameB) return -1; 
                 else if(nameA < nameB) return 1; else return 0;
             });
-        } else if(obj.sortType === "Cost") {
+        } else if(obj.sortType === constants.COST) {
             arr.sort((a,b)=> b.price - a.price);
-        } else if(obj.sortType === "Quantity") {
+        } else if(obj.sortType === constants.QUANTITY) {
             arr.sort((a,b)=> b.quantity - a.quantity);
         }
         setItemsList([...arr]);
     }
 
-    if(obj.order === "Descending") {
+    if(obj.order === constants.DESCENDING) {
        
-        if(obj.sortType === "Name") {
+        if(obj.sortType === constants.NAME) {
             arr.sort((a,b)=> { 
                 let nameA = a.name.toUpperCase();
                 let nameB = b.name.toUpperCase();
                 if(nameA > nameB) return 1; 
                 else if(nameA < nameB) return -1; else return 0;
             });
-        } else if(obj.sortType === "Cost") {
+        } else if(obj.sortType === constants.COST) {
             arr.sort((a,b)=> a.price - b.price);
-        } else if(obj.sortType === "Quantity") {
+        } else if(obj.sortType === constants.QUANTITY) {
             arr.sort((a,b)=> a.quantity - b.quantity);
         }
         setItemsList([...arr]);

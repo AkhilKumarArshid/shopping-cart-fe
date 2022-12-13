@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { cartItemsContext } from "../../App";
 import SearchSortBar from "../searchSortBar";
 import CartItem from "../cartItem"
-import { NavLink } from "react-router-dom";
+import * as constants from '../../constants';
+
 
 function CartPage() {
     const {products, setCartProducts} = useContext(cartItemsContext);
@@ -27,7 +29,7 @@ function CartPage() {
 
     const handleRemoveItem = (itemName)=> {
         let index = itemsInCart.findIndex((item) => item.name === itemName);
-        setItemsInCart([...update(index, 'delete', itemsInCart)]);
+        setItemsInCart([...update(index, constants.DELETE, itemsInCart)]);
         setCartProducts(itemsInCart);
         updateProductsList(itemName);
     }
@@ -44,15 +46,15 @@ function CartPage() {
     const update = (index, operation, arr)=> {
         if(index!==-1) {
             switch(operation) {
-                case "add":
+                case constants.INCREMENT:
                     arr[index].selected += 1;
                     arr[index].totalPrice += arr[index].price;
                     break;
-                case "dec":
+                case constants.DECREMENT:
                     arr[index].selected -=1;
                     arr[index].totalPrice -= arr[index].price;
                     break;
-                case "delete":
+                case constants.DELETE:
                     arr.splice(index, 1);
                     break;
                 default :
@@ -73,36 +75,36 @@ function CartPage() {
 
         let arr = JSON.parse(JSON.stringify(itemsInCart));
         setSearchText(obj.text);
-        if(obj.order === "Ascending") {
+        if(obj.order === constants.ASCENDING) {
 
-            if(obj.sortType === "Name") {
+            if(obj.sortType === constants.NAME) {
                 arr.sort((a,b)=> { 
                     let nameA = a.name.toUpperCase();
                     let nameB = b.name.toUpperCase();
                     if(nameA > nameB) return -1; 
                     else if(nameA < nameB) return 1; else return 0;
                 });
-            } else if(obj.sortType === "Cost") {
+            } else if(obj.sortType === constants.COST) {
                 arr.sort((a,b)=> b.price - a.price);
-            } else if(obj.sortType === "Quantity") {
+            } else if(obj.sortType === constants.QUANTITY) {
                 arr.sort((a,b)=> b.quantity - a.quantity);
             }
             setItemsInCart([...arr]);
             setCartProducts(itemsInCart);
         }
 
-        if(obj.order === "Descending") {
+        if(obj.order === constants.DESCENDING) {
            
-            if(obj.sortType === "Name") {
+            if(obj.sortType === constants.NAME) {
                 arr.sort((a,b)=> { 
                     let nameA = a.name.toUpperCase();
                     let nameB = b.name.toUpperCase();
                     if(nameA > nameB) return 1; 
                     else if(nameA < nameB) return -1; else return 0;
                 });
-            } else if(obj.sortType === "Cost") {
+            } else if(obj.sortType === constants.COST) {
                 arr.sort((a,b)=> a.price - b.price);
-            } else if(obj.sortType === "Quantity") {
+            } else if(obj.sortType === constants.QUANTITY) {
                 arr.sort((a,b)=> a.quantity - b.quantity);
             }
             setItemsInCart([...arr]);

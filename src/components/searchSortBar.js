@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import * as constants from '../constants';
 
 function SearchSortBar(props) {
-  let sortOptions = ["Name", "Cost", "Quantity"];
+  let sortOptions = [constants.NAME, constants.COST, constants.QUANTITY];
 
   const [check, setCheck] = useState('');
-  const [displayOrder, setDisplayOrder] = useState('Descending');
+  const [displayOrder, setDisplayOrder] = useState(constants.DESCENDING);
   const [serachText, setSearchText] = useState('');
 
   var handleChange = (event) => {
@@ -26,7 +27,7 @@ function SearchSortBar(props) {
   }
 
   const changeDisplayOrder = (e)=>{
-    let order = displayOrder === 'Descending'? 'Ascending' : 'Descending';
+    let order = displayOrder === constants.DESCENDING ? constants.ASCENDING : constants.DESCENDING;
     setDisplayOrder(order);
     props.handleClicks({
       text: serachText,
